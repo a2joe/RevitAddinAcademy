@@ -25,32 +25,32 @@ namespace RevitAddinAcademy
             Application app = uiapp.Application;
             Document doc = uidoc.Document;
 
-            // Access current selection
+            string text = "Revit Add-in Academy";
+            string fileName = doc.PathName;
 
-            Selection sel = uidoc.Selection;
+            double offset = 0.05;
+            double offsetCalc = offset * doc.ActiveView.Scale;
 
-            // Retrieve elements from database
 
-            FilteredElementCollector col
-              = new FilteredElementCollector(doc)
-                .WhereElementIsNotElementType()
-                .OfCategory(BuiltInCategory.INVALID)
-                .OfClass(typeof(Wall));
+            XYZ curPoint = new XYZ(0, 0, 0);  
+            XYZ offsetPoint = new XYZ(0, offsetCalc, 0);
 
-            // Filtered element collector is iterable
+            Transaction t = new Transaction(doc, "Create Text Note");
+            t.Start();
 
-            foreach (Element e in col)
+            FilterElementCollector collector = new FilterElementCollector(doc);
+            collector.OfClass(typeof(TextNoteType));
+
+
+            int range = 100;
+            for(int i = 1;i<=range;i++)
             {
-                Debug.Print(e.Name);
+                TextNote curNote = TextNote.Create(doc, doc.ActiveView.Id, curPoint, "This is Line " + i.ToString(), collector.FirstElementId());
+                curPoint = curPoint.Subtract(offsetPoint);
             }
 
-            // Modify document within a transaction
-
-            using (Transaction tx = new Transaction(doc))
-            {
-                tx.Start("Transaction Name");
-                tx.Commit();
-            }
+            t.Commit();
+            t.Dispose();
 
             return Result.Succeeded;
         }
