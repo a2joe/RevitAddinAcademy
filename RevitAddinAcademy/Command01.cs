@@ -10,10 +10,10 @@ using System.Diagnostics;
 
 #endregion
 
-namespace RevitAddinAcademy
+namespace RevitAddinAcademy01
 {
     [Transaction(TransactionMode.Manual)]
-    public class Command01 : IExternalCommand
+    public class Command : IExternalCommand
     {
         public Result Execute(
           ExternalCommandData commandData,
