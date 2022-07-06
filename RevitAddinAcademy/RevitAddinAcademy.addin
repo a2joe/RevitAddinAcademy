@@ -4,7 +4,7 @@
     <Text>Command RevitAddinAcademy</Text>
     <Description>Some description for RevitAddinAcademy</Description>
     <Assembly>RevitAddinAcademy.dll</Assembly>
-    <FullClassName>RevitAddinAcademy.Command</FullClassName>
+    <FullClassName>RevitAddinAcademy.FizzBuzz</FullClassName>
     <ClientId>8d0c0287-7e9a-4970-8a75-24d748da68bb</ClientId>
     <VendorId>com.typepad.thebuildingcoder</VendorId>
     <VendorDescription>The Building Coder, http://thebuildingcoder.typepad.com</VendorDescription>

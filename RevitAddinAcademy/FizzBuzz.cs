@@ -13,7 +13,7 @@ using System.Diagnostics;
 namespace RevitAddinAcademy
 {
     [Transaction(TransactionMode.Manual)]
-    public class Command : IExternalCommand
+    public class FizzBuzz : IExternalCommand
     {
         public Result Execute(
           ExternalCommandData commandData,

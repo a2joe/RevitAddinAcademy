@@ -55,7 +55,7 @@
     <Compile Include="App.cs" />
     <Compile Include="cmdDeleteBackup.cs" />
     <Compile Include="Command01.cs" />
-    <Compile Include="Command.cs" />
+    <Compile Include="FizzBuzz.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
