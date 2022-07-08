@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RevitAddIns>
   <AddIn Type="Command">
-    <Text>Command RevitAddinAcademy</Text>
-    <Description>Some description for RevitAddinAcademy</Description>
+    <Text>FizzBuzz Excercise</Text>
+    <Description>FizzBuzz for RevitAddinAcademy</Description>
     <Assembly>RevitAddinAcademy.dll</Assembly>
-    <FullClassName>RevitAddinAcademy.FizzBuzz</FullClassName>
+    <FullClassName>RevitAddinAcademy.cmdFizzBuzz</FullClassName>
     <ClientId>8d0c0287-7e9a-4970-8a75-24d748da68bb</ClientId>
     <VendorId>com.typepad.thebuildingcoder</VendorId>
     <VendorDescription>The Building Coder, http://thebuildingcoder.typepad.com</VendorDescription>
   </AddIn>
   <AddIn Type="Command">
     <Text>Delete Backup Files</Text>
-    <Description>Some description for RevitAddinAcademy</Description>
+    <Description>Delete Backup Files for RevitAddinAcademy</Description>
     <Assembly>RevitAddinAcademy.dll</Assembly>
     <FullClassName>RevitAddinAcademy.cmdDeleteBackups</FullClassName>
     <ClientId>B73F614D-DF78-4F01-89DE-1C14263EA5BB</ClientId>
