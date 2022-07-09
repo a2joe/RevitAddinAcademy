@@ -14,7 +14,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 namespace RevitAddinAcademy
 {
     [Transaction(TransactionMode.Manual)]
-    public class Command : IExternalCommand
+    public class cmdProjectSetup : IExternalCommand
     {
         public Result Execute(
           ExternalCommandData commandData,
@@ -26,11 +26,11 @@ namespace RevitAddinAcademy
             Application app = uiapp.Application;
             Document doc = uidoc.Document;
 
-            string excelFile = "";
+            string excelFile = @"C:\Users\jhood.7DCAD\OneDrive - Quinn Evans Architects, Inc\Documents\RevitAddinAcademy\Session02_Challenge.xlsx";
 
             Excel.Application excelApp = new Excel.Application();
             Excel.Workbook excelWb = excelApp.Workbooks.Open(excelFile);
-            Excel.Worksheet excelWs = excelWb.Worksheets.Item[1];
+            Excel.Worksheet excelWs = excelWb.Worksheets.Item[2]; //[x] determines spreadsheet Sheet number starting with 1.
 
             Excel.Range excelRng = excelWs.UsedRange;
             int rowCount = excelRng.Rows.Count;
@@ -61,9 +61,14 @@ namespace RevitAddinAcademy
                 collector.OfCategory(BuiltInCategory.OST_TitleBlocks);
                 collector.WhereElementIsElementType();
 
-                ViewSheet curSheet = ViewSheet.Create(doc, collector.FirstElementId());
-                curSheet.SheetNumber = "A10101010";
-                curSheet.Name = "New Sheet";
+                foreach (string[] row in dataList) //skip header, start at 2
+                {
+                    ViewSheet curSheet = ViewSheet.Create(doc, collector.FirstElementId());
+                    curSheet.SheetNumber = row[0];
+                    curSheet.Name = row[1];
+                }
+                    
+                
 
                 t.Commit();
             }
