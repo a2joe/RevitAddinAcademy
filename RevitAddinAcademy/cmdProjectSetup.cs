@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Excel = Microsoft.Office.Interop.Excel;
+using Forms = System.Windows.Forms;
 
 #endregion
 
@@ -26,11 +27,34 @@ namespace RevitAddinAcademy
             Application app = uiapp.Application;
             Document doc = uidoc.Document;
 
+            Forms.OpenFileDialog dialog = new Forms.OpenFileDialog();
+            dialog.InitialDirectory = @"c:\";
+            dialog.Multiselect = false;
+            dialog.Filter = "Excel Files | *.xls*";
+
+            string filePath = "";
+            //string[] filePaths;
+
+
+            if (dialog.ShowDialog() == Forms.DialogResult.OK)
+            {
+                filePath = dialog.FileName;
+                //filePaths = dialog.FileNames;
+            }
+            /*
+            Forms.FolderBrowserDialog folderDialog = new Forms.FolderBrowserDialog();
+
+            string folderPath = "";
+            if (folderDialog.ShowDialog() == Forms.DialogResult.OK)
+            {
+                folderPath = folderDialog.SelectedPath;
+            }
+            */
             //string excelFile = @"C:\Users\jhood.7DCAD\OneDrive - Quinn Evans Architects, Inc\Documents\RevitAddinAcademy\Session02_Challenge.xlsx";
-            string excelFile = @"c:\users\jhood\RevitAddinAcademy\Session02_Challenge.xlsx";
+            //string excelFile = @"c:\users\jhood\RevitAddinAcademy\Session02_Challenge.xlsx";
 
             Excel.Application excelapp = new Excel.Application();
-            Excel.Workbook excelWB = excelapp.Workbooks.Open(excelFile);
+            Excel.Workbook excelWB = excelapp.Workbooks.Open(filePath);
             Excel.Worksheet excelWSlevel = excelWB.Worksheets.Item[1];
             Excel.Worksheet excelWSsheet = excelWB.Worksheets.Item[2];
 
@@ -69,13 +93,13 @@ namespace RevitAddinAcademy
                 }
             }
 
-            for (int ii = 2; ii <= rowcountlev; ii++)
+            for (int i = 2; i <= rowcountlev; i++)
             {
-                Excel.Range levelelev = excelWSlevel.Cells[ii, 2];
+                Excel.Range levelelev = excelWSlevel.Cells[i, 2];
 
                 double dataelev = levelelev.Value;
 
-                Excel.Range levelname = excelWSlevel.Cells[ii, 1];
+                Excel.Range levelname = excelWSlevel.Cells[i, 1];
 
                 string dataname = levelname.Value.ToString();
 

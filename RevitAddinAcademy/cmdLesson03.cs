@@ -11,7 +11,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Forms = System.Windows.Forms;
 
 #endregion
-
+/*
 namespace RevitAddinAcademy
 {
     [Transaction(TransactionMode.Manual)]
@@ -154,13 +154,15 @@ namespace RevitAddinAcademy
                 Value2 = value2;
 
             }
-            /*
+            
             public double addNumber()
             {
                 return Value + Value2;
 
             }
-            */
+            
         }
+    
     }
 }
+*/
