@@ -28,104 +28,152 @@ namespace RevitAddinAcademy
             Document doc = uidoc.Document;
 
             Forms.OpenFileDialog dialog = new Forms.OpenFileDialog();
-            dialog.InitialDirectory = @"c:\";
+            dialog.InitialDirectory = @"C:\";
             dialog.Multiselect = false;
-            dialog.Filter = "Excel Files | *.xls*";
-
-            string filePath = "";
-            //string[] filePaths;
+            dialog.Filter = "Excel files | *.xlsx; *.xls; *.xlsm | All files | *.*";
 
             if (dialog.ShowDialog() != Forms.DialogResult.OK)
             {
                 TaskDialog.Show("Error", "Please select an Excel file.");
                 return Result.Failed;
             }
-            
-            filePath = dialog.FileName;
+
+            string excelFile = dialog.FileName;
             int levelCounter = 0;
-            int sheetCounter = 0;   
+            int sheetCounter = 0;
 
-           
-            Excel.Application excelapp = new Excel.Application();
-            Excel.Workbook excelWB = excelapp.Workbooks.Open(filePath);
-
-            Excel.Worksheet excelWs1 = GetExcelWorksheeetByName(excelWB, "Levels");
-            Excel.Worksheet excelWs2 = GetExcelWorksheeetByName(excelWB, "Sheets");
-
-
-            List<LevelStruct> levelData = GetLevelDataFromExcel(excelWs1);
-            List<SheetStruct> sheetData = GetSheetDataFromExcel(excelWs2)
-            
-
-            excelWB.Close();
-            excelapp.Quit();
-
-
-
-            using (Transaction t = new Transaction(doc))
+            try
             {
-                t.Start("Create Levels");
+                // open excel
+                Excel.Application excelApp = new Excel.Application();
+                Excel.Workbook excelWb = excelApp.Workbooks.Open(excelFile);
 
-                ViewFamilyType planVFT = GetViewFamily(doc, "plan");
-                ViewFamilyType rcpVFT = GetViewFamily(doc, "rcp");
+                Excel.Worksheet excelWs1 = GetExcelWorksheetByName(excelWb, "Levels");
+                Excel.Worksheet excelWs2 = GetExcelWorksheetByName(excelWb, "Sheets");
 
-                foreach(LevelStruct level in levelData)
+                List<LevelStruct> levelData = GetLevelDataFromExcel(excelWs1);
+                List<SheetStruct> sheetData = GetSheetDataFromExcel(excelWs2);
+
+                excelWb.Close();
+                excelApp.Quit();
+
+                using (Transaction t = new Transaction(doc))
                 {
-                    Level curLevel = Level.Create(doc, curLevel.LevelElev);
-                    curLevel.Name = curLevel.LevelName;
+                    t.Start("Setup project");
 
-                    ViewPlan curFloorPlan = ViewPlan.Create(doc, planVFT, newLevel.Id);
-                    ViewPlan curRCP = ViewPlan.CreateAreaPlan(doc.rcpVFT.Id, newLevel.Id);
+                    ViewFamilyType planVFT = GetViewFamilyType(doc, "plan");
+                    ViewFamilyType rcpVFT = GetViewFamilyType(doc, "rcp");
 
-                    curRCP.Name = curRCP.Name + " RCP";
+                    foreach (LevelStruct curLevel in levelData)
+                    {
+                        Level newLevel = Level.Create(doc, curLevel.LevelElev);
+                        newLevel.Name = curLevel.LevelName;
+                        levelCounter++;
 
-                    ViewPlan.Create()
+                        ViewPlan curFloorPlan = ViewPlan.Create(doc, planVFT.Id, newLevel.Id);
+                        ViewPlan curRCP = ViewPlan.Create(doc, rcpVFT.Id, newLevel.Id);
+
+                        curRCP.Name = curRCP.Name + " RCP";
+                    }
+
+                    FilteredElementCollector collector = GetTitleblock(doc);
+
+                    foreach (SheetStruct curSheet in sheetData)
+                    {
+                        ViewSheet newSheet = ViewSheet.Create(doc, collector.FirstElementId());
+
+                        newSheet.SheetNumber = curSheet.SheetNumber;
+                        newSheet.Name = curSheet.SheetName;
+
+                        SetParameterValue(newSheet, "Drawn By", curSheet.DrawnBy);
+                        SetParameterValue(newSheet, "Checked By", curSheet.CheckedBy);
+
+                        View curView = GetViewByName(doc, curSheet.SheetView);
+
+                        if (curView != null)
+                        {
+                            Viewport curVP = Viewport.Create(doc, newSheet.Id, curView.Id, new XYZ(0.5, 0.5, 0));
+                        }
+
+                        sheetCounter++;
+                    }
+
+                    t.Commit();
                 }
 
-                //FilteredElementCollector.ReferenceEquals..
-
-                foreach(SheetStruct curSheet in sheetData)
-                {
-                    ViewSheet newSheet = ViewSheet.Create(doc, FilteredElementCollector.FirElementId());
-
-                }
-                t.Commit();
+            }
+            catch (Exception ex)
+            {
+                Debug.Print(ex.Message);
             }
 
-
-
+            TaskDialog.Show("Complete", "Created " + levelCounter.ToString() + " levels.");
+            TaskDialog.Show("Complete", "Created " + sheetCounter.ToString() + " sheets.");
 
             return Result.Succeeded;
         }
 
-        private ViewFamilyType GetViewFamily(Document doc, string type)
+        private static FilteredElementCollector GetTitleblock(Document doc)
+        {
+            FilteredElementCollector collector = new FilteredElementCollector(doc);
+            collector.OfCategory(BuiltInCategory.OST_TitleBlocks);
+            collector.WhereElementIsElementType();
+            return collector;
+        }
+
+        private View GetViewByName(Document doc, string viewName)
+        {
+            FilteredElementCollector collector = new FilteredElementCollector(doc);
+            collector.OfCategory(BuiltInCategory.OST_Views);
+
+            foreach (View curView in collector)
+            {
+                if (curView.Name == viewName)
+                    return curView;
+            }
+
+            return null;
+        }
+
+        private void SetParameterValue(ViewSheet newSheet, string paramName, string paramValue)
+        {
+            foreach (Parameter curParam in newSheet.Parameters)
+            {
+                if (curParam.Definition.Name == paramName)
+                {
+                    curParam.Set(paramValue);
+                }
+            }
+        }
+
+        private ViewFamilyType GetViewFamilyType(Document doc, string type)
         {
             FilteredElementCollector collector = new FilteredElementCollector(doc);
             collector.OfClass(typeof(ViewFamilyType));
 
-            foreach(ViewFamilyType vft in collector)
+            foreach (ViewFamilyType vft in collector)
             {
-                if(vft.ViewFamily == ViewFamily.FloorPlan && type == "plan")
+                if (vft.ViewFamily == ViewFamily.FloorPlan && type == "plan")
                 {
                     return vft;
                 }
-                else if(vft.ViewFamily == ViewFamily.CeilingPlan && type == "rcp")
+                else if (vft.ViewFamily == ViewFamily.CeilingPlan && type == "rcp")
                 {
                     return vft;
                 }
-
             }
+
             return null;
         }
 
         private List<SheetStruct> GetSheetDataFromExcel(Excel.Worksheet excelWs)
         {
-            //int rowcountlev = excelRnglevel.Rows.Count;
-            List<LevelStruct> returnList = new List<LevelStruct>();
+            List<SheetStruct> returnList = new List<SheetStruct>();
+            Excel.Range excelRng1 = excelWs.UsedRange;
 
-            Excel.Range excelRngSh = excelWSsheet.UsedRange;
-            int rowcountsh = excelRngSh.Rows.Count;
-            for (int i = 2; i <= rowcountsh; i++)
+            int rowCount1 = excelRng1.Rows.Count;
+
+            for (int i = 2; i <= rowCount1; i++)
             {
                 Excel.Range data1 = excelWs.Cells[i, 1];
                 Excel.Range data2 = excelWs.Cells[i, 2];
@@ -137,42 +185,42 @@ namespace RevitAddinAcademy
                 curSheet.SheetNumber = data1.Value.ToString();
                 curSheet.SheetName = data2.Value.ToString();
                 curSheet.SheetView = data3.Value.ToString();
-                curSheet.DrawnBy = data4.Value; 
+                curSheet.DrawnBy = data4.Value;
                 curSheet.CheckedBy = data5.Value;
 
-                string datashname = sheetname.Value.ToString();
-                string datashnum = sheetnum.Value.ToString();
-
-                LevelStruct curLevel = new LevelStruct(levelName, levelElev);
-                returnList.Add(curLevel);
-
-                using (Transaction t = new Transaction(doc))
-                {
-                    t.Start("Create Sheets");
-
-                    FilteredElementCollector collector = new FilteredElementCollector(doc);
-                    collector.OfCategory(BuiltInCategory.OST_TitleBlocks);
-                    collector.WhereElementIsElementType();
-
-                    ViewSheet curSheet = ViewSheet.Create(doc, collector.FirstElementId());
-                    curSheet.SheetNumber = datashnum;
-                    curSheet.Name = datashname;
-
-                    t.Commit();
-                }
+                returnList.Add(curSheet);
             }
+
+            return returnList;
         }
 
         private List<LevelStruct> GetLevelDataFromExcel(Excel.Worksheet excelWs1)
         {
-            throw new NotImplementedException();
+            List<LevelStruct> returnList = new List<LevelStruct>();
+            Excel.Range excelRng1 = excelWs1.UsedRange;
+
+            int rowCount1 = excelRng1.Rows.Count;
+
+            for (int i = 2; i <= rowCount1; i++)
+            {
+                Excel.Range levelData1 = excelWs1.Cells[i, 1];
+                Excel.Range levelData2 = excelWs1.Cells[i, 2];
+
+                string levelName = levelData1.Value.ToString();
+                double levelElev = levelData2.Value;
+
+                LevelStruct curLevel = new LevelStruct(levelName, levelElev);
+                returnList.Add(curLevel);
+            }
+
+            return returnList;
         }
 
-        private Excel.Worksheet GetExcelWorksheeetByName(Excel.Workbook curWb, string wsName)
+        private Excel.Worksheet GetExcelWorksheetByName(Excel.Workbook curWb, string wsName)
         {
-            foreach(Excel.Worksheet ws in curWb.Worksheets)
+            foreach (Excel.Worksheet ws in curWb.Worksheets)
             {
-                if(ws.Name == wsName)
+                if (ws.Name == wsName)
                 {
                     return ws;
                 }
@@ -200,7 +248,6 @@ namespace RevitAddinAcademy
             public string SheetView;
             public string DrawnBy;
             public string CheckedBy;
-            //public string SheetCat;
 
             public SheetStruct(string number, string name, string view, string db, string cb)
             {
@@ -209,8 +256,6 @@ namespace RevitAddinAcademy
                 SheetView = view;
                 DrawnBy = db;
                 CheckedBy = cb;
-
-                //SheetCat = "DOCUMENT";
             }
         }
     }
