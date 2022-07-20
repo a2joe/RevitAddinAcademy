@@ -30,8 +30,8 @@ namespace RevitAddinAcademy
             Forms.OpenFileDialog dialog = new Forms.OpenFileDialog();
             dialog.InitialDirectory = @"C:\";
             dialog.Multiselect = false;
-            dialog.Filter = "Excel files | *.xls*";
-            //dialog.Filter = "Excel files | *.xlsx; *.xls; *.xlsm | All files | *.*";
+            //dialog.Filter = "Excel files | *.xls*";
+            dialog.Filter = "Excel files | *.xlsx; *.xls; *.xlsm | All files | *.*";
 
             if (dialog.ShowDialog() != Forms.DialogResult.OK)
             {
@@ -93,7 +93,7 @@ namespace RevitAddinAcademy
 
                         if (curView != null)
                         {
-                            Viewport curVP = Viewport.Create(doc, newSheet.Id, curView.Id, new XYZ(0.2, 0.2, 0));
+                            Viewport curVP = Viewport.Create(doc, newSheet.Id, curView.Id, new XYZ(0.5, 0.5, 0));
                         }
 
                         sheetCounter++;
