@@ -25,7 +25,7 @@ namespace RevitAddinAcademy
             Application app = uiapp.Application;
             Document doc = uidoc.Document;
 
-            string text = "Revit Add-in Academy";
+            //string text = "Revit Add-in Academy";
             string fileName = doc.PathName;
 
             double offset = 0.05;
