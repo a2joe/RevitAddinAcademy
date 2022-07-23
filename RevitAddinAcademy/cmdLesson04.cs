@@ -53,6 +53,9 @@ namespace RevitAddinAcademy
                         curveList.Add(curve);
 
                         GraphicsStyle curGS = curve.LineStyle as GraphicsStyle;
+                        GraphicsStyle curGS2 = curve2.LineStyle as GraphicsStyle;
+                        ElementId curID = curve.Id as ElementId;
+                        ElementId curID2 = curve2.Id as ElementId;
 
                         Curve curCurve = curve.GeometryCurve;
                         XYZ startPoint = curCurve.GetEndPoint(0);
@@ -61,21 +64,19 @@ namespace RevitAddinAcademy
                         switch (curGS.Name)
                         {
                             case "A-GLAZ":
-                                Debug.Print("A-GLAZ");
-                                //Wall newWall = Wall.Create(doc, curCurve, curWallType.Id, curLevel.Id, 15, 0, false, false);
+                                Debug.Print("A-GLAZ" + curID + " " + curID2);
                                 break;
 
                             case "A-WALL":
-                                Debug.Print("A-WALL");
-                                //AwallWall newWall = Wall.Create(doc, curCurve, curWallType.Id, curLevel.Id, 15, 0, false, false);
+                                Debug.Print("A-WALL" + curID + " " + curID2);
                                 break;
 
                             case "M-DUCT":
-                                Debug.Print("M-DUCT");
+                                Debug.Print("M-DUCT" + curID + " " + curID2);
                                 break;
 
                             case "P-PIPE":
-                                Debug.Print("P-PIPE");
+                                Debug.Print("P-PIPE" + curID + " " + curID2); 
                                 break;
 
                             case "<Medium>":
@@ -102,7 +103,13 @@ namespace RevitAddinAcademy
                                 break;
                         }
 
-
+                        if (curGS.Name == "A-GLAZ" ||
+                            curGS.Name == "A-WALL" ||
+                            curGS.Name == "M-DUCT" ||
+                            curGS.Name == "P-PIPE")
+                        {
+                            Wall newWall = Wall.Create(doc, curCurve, curID, curID2, 15, 0, false, false);
+                        }
 
                         //Wall newWall = Wall.Create(doc, curCurve, curWallType.Id, curLevel.Id, 15, 0, false, false);
 
@@ -179,6 +186,17 @@ namespace RevitAddinAcademy
                     return curType;
             }
             return null;
+        }
+        public void GetInfo_WallType(WallType wallType)
+        {
+            string message;
+            // Reports the nature of the wall
+            message = "The wall type kind is : " + wallType.Kind.ToString();
+
+            // Get the overall thickness of this type of wall.
+            message += "\nThe wall type Width is : " + wallType.Width.ToString();
+
+            TaskDialog.Show("Revit", message);
         }
     }
 }
