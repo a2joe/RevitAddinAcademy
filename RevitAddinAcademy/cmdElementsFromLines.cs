@@ -62,36 +62,78 @@ namespace RevitAddinAcademy
                         XYZ startPoint = curCurve.GetEndPoint(0);
                         XYZ endPoint = curCurve.GetEndPoint(1);
 
-                        switch (curGS.Name)
-                        {
-                            case "A-GLAZ":
-                                Debug.Print("A-GLAZ" + curID + " " + curID2);
-                                try
-                                {
-                                    Wall newStorefrontWall = Wall.Create(doc, curCurve, curStorefrontType.Id, curLevel.Id, 15, 0, false, false);
-                                }
-                                catch (Exception e)
-                                {
-                                    Debug.Print("Exception caught:\n\n" + e.ToString());
-                                }
-                                break;
+                            switch (curveGS.Name)
+                            {
+                                case "A-GLAZ":
+                                    //Wall newWall = Wall.Create(
+                                    //doc,
+                                    //curCurve,
+                                    //curWallType.Id,
+                                    //curLevel.Id,
+                                    //15,
+                                    //0,
+                                    //false,
+                                    //false
+                                    //);
+                                    Wall newGWall = Wall.Create(
+                                        doc, 
+                                        curve.GeometryCurve, 
+                                        wallGlaz.Id, 
+                                        level.Id, 
+                                        5, 
+                                        0, 
+                                        false, 
+                                        false
+                                        );
+                                    Debug.WriteLine(curveGS.Name.ToString());
+                                    break;
 
-                            case "A-WALL":
-                                Debug.Print("A-WALL" + curID + " " + curID2);
-                                break;
+                                case "A-WALL":
+                                    Wall newAWall = Wall.Create(
+                                        doc, 
+                                        curve.GeometryCurve, 
+                                        wallArch.Id, 
+                                        level.Id, 
+                                        5, 
+                                        0, 
+                                        false, 
+                                        false
+                                        );
+                                    Debug.WriteLine(curveGS.Name.ToString());
+                                    break;
 
-                            case "M-DUCT":
-                                Debug.Print("M-DUCT" + curID + " " + curID2);
-                                break;
+                                case "M-DUCT":
+                                    XYZ startPoint = curve.GeometryCurve.GetEndPoint(0);
+                                    XYZ endPoint = curve.GeometryCurve.GetEndPoint(1);
+                                    Duct newDuct = Duct.Create(
+                                        doc, 
+                                        ductSystem.Id, 
+                                        ductType.Id, 
+                                        level.Id, 
+                                        startPoint, 
+                                        endPoint
+                                        );
+                                    Debug.WriteLine(curveGS.Name.ToString());
 
                             case "P-PIPE":
                                 Debug.Print("P-PIPE" + curID + " " + curID2); 
                                 break;
 
-                            case "<Medium>":
-
-                                Debug.Print("found a medium line");
-                                break;
+                                case "P-PIPE":
+                                    XYZ startPPoint = curve.GeometryCurve.GetEndPoint(0);
+                                    XYZ endPPoint = curve.GeometryCurve.GetEndPoint(1);
+                                    Pipe newPipe = Pipe.Create(
+                                        doc, 
+                                        pipeSystem.Id, 
+                                        pipeType.Id, 
+                                        level.Id, 
+                                        startPPoint, 
+                                        endPPoint
+                                        );
+                                    Debug.WriteLine(curveGS.Name.ToString());
+                                    break;
+                            }
+                        }
 
                             case "<Thin lines>":
                                 Debug.Print("found a thin line");
