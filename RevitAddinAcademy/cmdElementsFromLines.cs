@@ -35,6 +35,7 @@ namespace RevitAddinAcademy
 
             WallType curWallType = GetWallTypeByName(doc, @"Generic - 8""");
             Level curLevel = GetLevelByName(doc, "Level 1");
+            WallType curStorefrontType = GetWallTypeByName(doc, "Storefront");
 
             MEPSystemType curSystemType = GetSystemTypeByName(doc, "Domestic Hot Water");
             PipeType curPipeType = GetPipeTypeByName(doc, "Default");
@@ -65,6 +66,14 @@ namespace RevitAddinAcademy
                         {
                             case "A-GLAZ":
                                 Debug.Print("A-GLAZ" + curID + " " + curID2);
+                                try
+                                {
+                                    Wall newStorefrontWall = Wall.Create(doc, curCurve, curStorefrontType.Id, curLevel.Id, 15, 0, false, false);
+                                }
+                                catch (Exception e)
+                                {
+                                    Debug.Print("Exception caught:\n\n" + e.ToString());
+                                }
                                 break;
 
                             case "A-WALL":
@@ -102,17 +111,23 @@ namespace RevitAddinAcademy
                                 Debug.Print("Found something else");
                                 break;
                         }
-
+                        /*
                         if (curGS.Name == "A-GLAZ" ||
                             curGS.Name == "A-WALL" ||
                             curGS.Name == "M-DUCT" ||
                             curGS.Name == "P-PIPE")
                         {
-                            //currently failing
-                            Wall newWall = Wall.Create(doc, curCurve, curID, curID2, 15, 0, false, false);
+                            try
+                            {
+                                //Wall newWall = Wall.Create(doc, curCurve, curWallType.Id, curLevel.Id, 15, 0, false, false);
+                                Wall newWall = Wall.Create(doc, curCurve, curID, curID2, 15, 0, false, false);
+                            }
+                            catch (Exception e)
+                            {
+                                Debug.Print("Exception caught:\n\n" + e.ToString());
+                            }
                         }
-
-                        //Wall newWall = Wall.Create(doc, curCurve, curWallType.Id, curLevel.Id, 15, 0, false, false);
+                        */
 
 
                         Debug.Print(curGS.Name);
