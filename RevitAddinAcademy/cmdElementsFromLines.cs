@@ -4,18 +4,20 @@ using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
+using Autodesk.Revit.DB.Mechanical;
+using Autodesk.Revit.DB.Plumbing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Autodesk.Revit.DB.Plumbing;
-using Autodesk.Revit.DB.Mechanical;
-using Autodesk.Revit.DB.Structure;
-using Autodesk.Revit.DB.Architecture;
 
 #endregion
 
 namespace RevitAddinAcademy
 {
+    /*
+     * Stolen from MichalZaperty
+     */
+
     [Transaction(TransactionMode.Manual)]
     public class cmdElementsFromLines : IExternalCommand
     {
@@ -26,41 +28,42 @@ namespace RevitAddinAcademy
         {
             UIApplication uiapp = commandData.Application;
             UIDocument uidoc = uiapp.ActiveUIDocument;
-
             Application app = uiapp.Application;
             Document doc = uidoc.Document;
 
-            IList<Element> pickList = uidoc.Selection.PickElementsByRectangle("Select some elements:");
+
+            IList<Element> picklist = uidoc.Selection.PickElementsByRectangle("Select Elements");
+
             List<CurveElement> curveList = new List<CurveElement>();
 
-            WallType curWallType = GetWallTypeByName(doc, @"Generic - 8""");
-            Level curLevel = GetLevelByName(doc, "Level 1");
-            WallType curStorefrontType = GetWallTypeByName(doc, "Storefront");
+            Level level = GetLevel(doc, "Level 1");
 
-            MEPSystemType curSystemType = GetSystemTypeByName(doc, "Domestic Hot Water");
-            PipeType curPipeType = GetPipeTypeByName(doc, "Default");
+            WallType wallGlaz = GetWallType(doc, "Storefront");
+            WallType wallArch = GetWallType(doc, @"Generic - 8""");
+
+
+            PipeType pipeType = GetPipe(doc, "Default");
+            MEPSystemType pipeSystem = GetMEPSystem(doc, "Domestic Hot Water");
+            DuctType ductType = GetDuct(doc, "Default");
+            MEPSystemType ductSystem = GetMEPSystem(doc, "Return Air");
+
+            FilteredElementCollector collector = new FilteredElementCollector(doc);
+            collector.OfClass(typeof(MEPSystemType));
 
             using (Transaction t = new Transaction(doc))
             {
                 t.Start("Create Revit stuff");
-
-                foreach (Element element in pickList)
+                try
                 {
-                    if (element is CurveElement)
+                    foreach (Element e in picklist)
                     {
-                        CurveElement curve = (CurveElement)element;
-                        CurveElement curve2 = element as CurveElement;
+                        if (e is CurveElement)
+                        {
+                            CurveElement curve = (CurveElement)e;
+                            curveList.Add(curve);
 
-                        curveList.Add(curve);
 
-                        GraphicsStyle curGS = curve.LineStyle as GraphicsStyle;
-                        GraphicsStyle curGS2 = curve2.LineStyle as GraphicsStyle;
-                        ElementId curID = curve.Id as ElementId;
-                        ElementId curID2 = curve2.Id as ElementId;
-
-                        Curve curCurve = curve.GeometryCurve;
-                        XYZ startPoint = curCurve.GetEndPoint(0);
-                        XYZ endPoint = curCurve.GetEndPoint(1);
+                            GraphicsStyle curveGS = curve.LineStyle as GraphicsStyle;
 
                             switch (curveGS.Name)
                             {
@@ -76,13 +79,13 @@ namespace RevitAddinAcademy
                                     //false
                                     //);
                                     Wall newGWall = Wall.Create(
-                                        doc, 
-                                        curve.GeometryCurve, 
-                                        wallGlaz.Id, 
-                                        level.Id, 
-                                        5, 
-                                        0, 
-                                        false, 
+                                        doc,
+                                        curve.GeometryCurve,
+                                        wallGlaz.Id,
+                                        level.Id,
+                                        5,
+                                        0,
+                                        false,
                                         false
                                         );
                                     Debug.WriteLine(curveGS.Name.ToString());
@@ -90,13 +93,13 @@ namespace RevitAddinAcademy
 
                                 case "A-WALL":
                                     Wall newAWall = Wall.Create(
-                                        doc, 
-                                        curve.GeometryCurve, 
-                                        wallArch.Id, 
-                                        level.Id, 
-                                        5, 
-                                        0, 
-                                        false, 
+                                        doc,
+                                        curve.GeometryCurve,
+                                        wallArch.Id,
+                                        level.Id,
+                                        5,
+                                        0,
+                                        false,
                                         false
                                         );
                                     Debug.WriteLine(curveGS.Name.ToString());
@@ -106,28 +109,26 @@ namespace RevitAddinAcademy
                                     XYZ startPoint = curve.GeometryCurve.GetEndPoint(0);
                                     XYZ endPoint = curve.GeometryCurve.GetEndPoint(1);
                                     Duct newDuct = Duct.Create(
-                                        doc, 
-                                        ductSystem.Id, 
-                                        ductType.Id, 
-                                        level.Id, 
-                                        startPoint, 
+                                        doc,
+                                        ductSystem.Id,
+                                        ductType.Id,
+                                        level.Id,
+                                        startPoint,
                                         endPoint
                                         );
                                     Debug.WriteLine(curveGS.Name.ToString());
 
-                            case "P-PIPE":
-                                Debug.Print("P-PIPE" + curID + " " + curID2); 
-                                break;
+                                    break;
 
                                 case "P-PIPE":
                                     XYZ startPPoint = curve.GeometryCurve.GetEndPoint(0);
                                     XYZ endPPoint = curve.GeometryCurve.GetEndPoint(1);
                                     Pipe newPipe = Pipe.Create(
-                                        doc, 
-                                        pipeSystem.Id, 
-                                        pipeType.Id, 
-                                        level.Id, 
-                                        startPPoint, 
+                                        doc,
+                                        pipeSystem.Id,
+                                        pipeType.Id,
+                                        level.Id,
+                                        startPPoint,
                                         endPPoint
                                         );
                                     Debug.WriteLine(curveGS.Name.ToString());
@@ -135,126 +136,94 @@ namespace RevitAddinAcademy
                             }
                         }
 
-                            case "<Thin lines>":
-                                Debug.Print("found a thin line");
-                                break;
-
-                            case "<Wide Lines>":
-                                Pipe newPipe = Pipe.Create(
-                                    doc,
-                                    curSystemType.Id,
-                                    curPipeType.Id,
-                                    curLevel.Id,
-                                    startPoint,
-                                    endPoint);
-                                break;
-
-                            default:
-                                Debug.Print("Found something else");
-                                break;
-                        }
-                        /*
-                        if (curGS.Name == "A-GLAZ" ||
-                            curGS.Name == "A-WALL" ||
-                            curGS.Name == "M-DUCT" ||
-                            curGS.Name == "P-PIPE")
-                        {
-                            try
-                            {
-                                //Wall newWall = Wall.Create(doc, curCurve, curWallType.Id, curLevel.Id, 15, 0, false, false);
-                                Wall newWall = Wall.Create(doc, curCurve, curID, curID2, 15, 0, false, false);
-                            }
-                            catch (Exception e)
-                            {
-                                Debug.Print("Exception caught:\n\n" + e.ToString());
-                            }
-                        }
-                        */
+                        ICollection<ElementId> deletedIdSet = doc.Delete(e.Id);
 
 
-                        Debug.Print(curGS.Name);
                     }
                 }
+
+                catch (Exception e)
+                {
+                    // Debug.WriteLine(e.ToString());
+                    // Debug.WriteLine(e.Message.ToString());
+                    // Debug.WriteLine(curveList.ToString());
+
+                }
+
 
                 t.Commit();
             }
 
 
-            TaskDialog.Show("complete", curveList.Count.ToString());
+
+
+
             return Result.Succeeded;
         }
-
-        //private Wall Wall.Create();
-
-        private WallType GetWallTypeByName(Document doc, string wallTypeName)
+        private WallType GetWallType(Document doc, string input)
         {
             FilteredElementCollector collector = new FilteredElementCollector(doc);
             collector.OfClass(typeof(WallType));
 
-            foreach (Element curElem in collector)
+            foreach (Element e in collector)
             {
-                WallType wallType = curElem as WallType;
-
-                if (wallType.Name == wallTypeName)
-                    return wallType;
+                WallType wt = e as WallType;
+                if (wt.Name == input)
+                    return wt;
             }
             return null;
         }
-
-        private Level GetLevelByName(Document doc, string levelName)
+        private Level GetLevel(Document doc, string input)
         {
             FilteredElementCollector collector = new FilteredElementCollector(doc);
             collector.OfClass(typeof(Level));
 
-            foreach (Element curElem in collector)
+            foreach (Element e in collector)
             {
-                Level level = curElem as Level;
-
-                if (level.Name == levelName)
-                    return level;
+                Level curElement = e as Level;
+                if (curElement.Name == input)
+                    return curElement;
             }
             return null;
         }
-
-        private MEPSystemType GetSystemTypeByName(Document doc, string typeName)
+        private MEPSystemType GetMEPSystem(Document doc, string input)
         {
             FilteredElementCollector collector = new FilteredElementCollector(doc);
             collector.OfClass(typeof(MEPSystemType));
 
-            foreach (Element curElem in collector)
+            foreach (Element e in collector)
             {
-                MEPSystemType curType = curElem as MEPSystemType;
-
-                if (curType.Name == typeName)
-                    return curType;
+                MEPSystemType curElement = e as MEPSystemType;
+                if (curElement.Name == input)
+                    return curElement;
             }
             return null;
         }
-
-        private PipeType GetPipeTypeByName(Document doc, string typeName)
+        private PipeType GetPipe(Document doc, string input)
         {
             FilteredElementCollector collector = new FilteredElementCollector(doc);
             collector.OfClass(typeof(PipeType));
 
-            foreach (Element curElem in collector)
+            foreach (Element e in collector)
             {
-                PipeType curType = curElem as PipeType;
-
-                if (curType.Name == typeName)
-                    return curType;
+                PipeType curElement = e as PipeType;
+                if (curElement.Name == input)
+                    return curElement;
             }
             return null;
         }
-        public void GetInfo_WallType(WallType wallType)
+        private DuctType GetDuct(Document doc, string input)
         {
-            string message;
-            // Reports the nature of the wall
-            message = "The wall type kind is : " + wallType.Kind.ToString();
+            FilteredElementCollector collector = new FilteredElementCollector(doc);
+            collector.OfClass(typeof(DuctType));
 
-            // Get the overall thickness of this type of wall.
-            message += "\nThe wall type Width is : " + wallType.Width.ToString();
-
-            TaskDialog.Show("Revit", message);
+            foreach (Element e in collector)
+            {
+                DuctType curElement = e as DuctType;
+                if (curElement.Name == input)
+                    return curElement;
+            }
+            return null;
         }
     }
 }
