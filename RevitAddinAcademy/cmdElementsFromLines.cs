@@ -69,12 +69,12 @@ namespace RevitAddinAcademy
                             {
                                 case "A-GLAZ":
                                     //Wall newWall = Wall.Create(doc, curCurve, curWallType.Id, curLevel.Id, 15, 0, false, false);
-                                    Wall newGWall = Wall.Create(doc, curve.GeometryCurve, wallGlaz.Id, level.Id, 20, 0, false, false);
+                                    Wall newGWall = Wall.Create(doc, curve.GeometryCurve, wallGlaz.Id, level.Id, 5, 0, false, false);
                                     Debug.WriteLine(curveGS.Name.ToString());
                                     break;
 
                                 case "A-WALL":
-                                    Wall newAWall = Wall.Create(doc, curve.GeometryCurve, wallArch.Id, level.Id, 20, 0, false, false);
+                                    Wall newAWall = Wall.Create(doc, curve.GeometryCurve, wallArch.Id, level.Id, 5, 0, false, false);
                                     Debug.WriteLine(curveGS.Name.ToString());
                                     break;
 
