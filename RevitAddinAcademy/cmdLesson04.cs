@@ -108,6 +108,7 @@ namespace RevitAddinAcademy
                             curGS.Name == "M-DUCT" ||
                             curGS.Name == "P-PIPE")
                         {
+                            //currently failing
                             Wall newWall = Wall.Create(doc, curCurve, curID, curID2, 15, 0, false, false);
                         }
 
