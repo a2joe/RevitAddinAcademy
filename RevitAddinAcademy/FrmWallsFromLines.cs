@@ -66,5 +66,10 @@ namespace RevitAddinAcademy
         {
             return cbxStructural.Checked;
         }
+
+        private void FrmWallsFromLines_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

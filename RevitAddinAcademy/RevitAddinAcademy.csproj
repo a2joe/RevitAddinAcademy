@@ -77,6 +77,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\QuinnEvans_Gradient500.jpg" />
     <Content Include="RevitAddinAcademy.addin" />
   </ItemGroup>
   <ItemGroup>

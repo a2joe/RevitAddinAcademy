@@ -43,6 +43,8 @@
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.ForeColor = System.Drawing.SystemColors.Control;
             this.label1.Location = new System.Drawing.Point(8, 6);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
@@ -53,6 +55,8 @@
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.label2.Location = new System.Drawing.Point(8, 53);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
@@ -63,6 +67,8 @@
             // label3
             // 
             this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Location = new System.Drawing.Point(8, 110);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
@@ -78,7 +84,7 @@
             this.cmbLineStyles.Location = new System.Drawing.Point(11, 27);
             this.cmbLineStyles.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cmbLineStyles.Name = "cmbLineStyles";
-            this.cmbLineStyles.Size = new System.Drawing.Size(377, 21);
+            this.cmbLineStyles.Size = new System.Drawing.Size(501, 21);
             this.cmbLineStyles.TabIndex = 3;
             // 
             // cmbWallTypes
@@ -89,7 +95,7 @@
             this.cmbWallTypes.Location = new System.Drawing.Point(11, 75);
             this.cmbWallTypes.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cmbWallTypes.Name = "cmbWallTypes";
-            this.cmbWallTypes.Size = new System.Drawing.Size(377, 21);
+            this.cmbWallTypes.Size = new System.Drawing.Size(501, 21);
             this.cmbWallTypes.TabIndex = 4;
             // 
             // tbxWallHeight
@@ -99,51 +105,60 @@
             this.tbxWallHeight.Location = new System.Drawing.Point(11, 130);
             this.tbxWallHeight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tbxWallHeight.Name = "tbxWallHeight";
-            this.tbxWallHeight.Size = new System.Drawing.Size(377, 20);
+            this.tbxWallHeight.Size = new System.Drawing.Size(501, 20);
             this.tbxWallHeight.TabIndex = 5;
             // 
             // cbxStructural
             // 
             this.cbxStructural.AutoSize = true;
+            this.cbxStructural.BackColor = System.Drawing.Color.Transparent;
+            this.cbxStructural.ForeColor = System.Drawing.Color.White;
             this.cbxStructural.Location = new System.Drawing.Point(13, 169);
             this.cbxStructural.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cbxStructural.Name = "cbxStructural";
             this.cbxStructural.Size = new System.Drawing.Size(112, 17);
             this.cbxStructural.TabIndex = 6;
             this.cbxStructural.Text = "Is Wall Structural?";
-            this.cbxStructural.UseVisualStyleBackColor = true;
+            this.cbxStructural.UseVisualStyleBackColor = false;
             // 
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOK.BackColor = System.Drawing.Color.Green;
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(225, 170);
+            this.btnOK.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnOK.ForeColor = System.Drawing.Color.White;
+            this.btnOK.Location = new System.Drawing.Point(349, 260);
             this.btnOK.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 25);
             this.btnOK.TabIndex = 7;
             this.btnOK.Text = "OK";
-            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.UseVisualStyleBackColor = false;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.BackColor = System.Drawing.Color.Green;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(311, 170);
+            this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnCancel.ForeColor = System.Drawing.Color.White;
+            this.btnCancel.Location = new System.Drawing.Point(435, 260);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 25);
             this.btnCancel.TabIndex = 8;
             this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // FrmWallsFromLines
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(396, 208);
+            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.ClientSize = new System.Drawing.Size(520, 298);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.cbxStructural);
@@ -153,10 +168,12 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "FrmWallsFromLines";
             this.Text = "Walls from Lines";
+            this.Load += new System.EventHandler(this.FrmWallsFromLines_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
