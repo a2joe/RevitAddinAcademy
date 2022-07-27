@@ -49,10 +49,12 @@ namespace RevitAddinAcademy
 
             FilteredElementCollector collector = new FilteredElementCollector(doc);
             collector.OfClass(typeof(MEPSystemType));
+            
 
             using (Transaction t = new Transaction(doc))
             {
                 t.Start("Create Revit stuff");
+                int Counter = 0;
                 try
                 {
                     foreach (Element e in picklist)
@@ -68,16 +70,19 @@ namespace RevitAddinAcademy
                             switch (curveGS.Name)
                             {
                                 case "A-GLAZ":
-                                    //Wall newWall = Wall.Create(
-                                    //doc,
-                                    //curCurve,
-                                    //curWallType.Id,
-                                    //curLevel.Id,
-                                    //15,
-                                    //0,
-                                    //false,
-                                    //false
-                                    //);
+                                    /*
+                                    Wall newWall = Wall.Create(
+                                    doc,
+                                    curCurve,
+                                    curWallType.Id,
+                                    curLevel.Id,
+                                    15,
+                                    0,
+                                    false,
+                                    false
+                                    );
+                                    */
+                                    Counter++;
                                     Wall newGWall = Wall.Create(
                                         doc,
                                         curve.GeometryCurve,
@@ -92,6 +97,7 @@ namespace RevitAddinAcademy
                                     break;
 
                                 case "A-WALL":
+                                    Counter++;
                                     Wall newAWall = Wall.Create(
                                         doc,
                                         curve.GeometryCurve,
@@ -106,6 +112,7 @@ namespace RevitAddinAcademy
                                     break;
 
                                 case "M-DUCT":
+                                    Counter++;
                                     XYZ startPoint = curve.GeometryCurve.GetEndPoint(0);
                                     XYZ endPoint = curve.GeometryCurve.GetEndPoint(1);
                                     Duct newDuct = Duct.Create(
@@ -121,6 +128,7 @@ namespace RevitAddinAcademy
                                     break;
 
                                 case "P-PIPE":
+                                    Counter++;
                                     XYZ startPPoint = curve.GeometryCurve.GetEndPoint(0);
                                     XYZ endPPoint = curve.GeometryCurve.GetEndPoint(1);
                                     Pipe newPipe = Pipe.Create(
@@ -133,13 +141,16 @@ namespace RevitAddinAcademy
                                         );
                                     Debug.WriteLine(curveGS.Name.ToString());
                                     break;
+                                default:
+                                    break;
                             }
                         }
 
                         ICollection<ElementId> deletedIdSet = doc.Delete(e.Id);
-
+                        
 
                     }
+                    TaskDialog.Show("Counter", "We got " + Counter + " hits.");
                 }
 
                 catch (Exception e)
@@ -153,8 +164,6 @@ namespace RevitAddinAcademy
 
                 t.Commit();
             }
-
-
 
 
 
