@@ -59,6 +59,9 @@
     <Compile Include="App.cs" />
     <Compile Include="cmdDeleteBackup.cs" />
     <Compile Include="cmdElementsFromLines.cs" />
+    <Compile Include="cmd.cs" />
+    <Compile Include="cmdEmployees.cs" />
+    <Compile Include="cmdFurniture.cs" />
     <Compile Include="cmdWallsFromLines.cs" />
     <Compile Include="cmdLesson03.cs" />
     <Compile Include="cmdProjectSetup.cs" />
@@ -69,6 +72,8 @@
     <Compile Include="FrmWallsFromLines.Designer.cs">
       <DependentUpon>FrmWallsFromLines.cs</DependentUpon>
     </Compile>
+    <Compile Include="myClass.cs" />
+    <Compile Include="MyFurnitureClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
