@@ -5,6 +5,7 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.UI.Selection;
 using Autodesk.Revit.DB.Architecture;
+using Autodesk.Revit.DB.Structure;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -53,13 +54,15 @@ namespace RevitAddinAcademy
 
             foreach (string[] curRow in excelFurnSetData)
             {
-                FurnSet tmpFurnSet = new FurnSet(curRow[0].Trim(), curRow[1].Trim(), curRow[2].Trim());
+                FurnSet tmpFurnSet = new FurnSet(curRow[0], curRow[1], curRow[2]);
+
                 furnSetList.Add(tmpFurnSet);
             }
 
             foreach (string[] curRow in excelFurnData)
             {
-                FurnData tmpFurnData = new FurnData(doc, curRow[0].Trim(), curRow[1].Trim(), curRow[2].Trim());
+                FurnData tmpFurnData = new FurnData(doc, curRow[0], curRow[1], curRow[2]);
+
                 furnDataList.Add(tmpFurnData);
             }
 
@@ -78,8 +81,13 @@ namespace RevitAddinAcademy
 
                     foreach (FurnSet tmpFurnSet in furnSetList)
                     {
+
                         if (tmpFurnSet.setType == curFurnSet)
                         {
+                            XYZ xyzSet = new XYZ(3, 3, 0);
+                            XYZ newPt = null;
+                            double xSet = 0.0;
+
                             foreach (string curFurn in tmpFurnSet.furnList)
                             {
                                 string tmpFurn = curFurn.Trim();
@@ -87,12 +95,27 @@ namespace RevitAddinAcademy
 
                                 if (fd != null)
                                 {
+                                    if (xSet == insPoint.X)
+                                    {
+                                        newPt = insPoint.Add(xyzSet);
+                                        Debug.Print("New Fizz");
+                                    }
+                                    else
+                                    {
+                                        newPt = insPoint;
+                                        Debug.Print("Old Buzz");
+                                    }
+
                                     fd.familySymbol.Activate();
 
-                                    FamilyInstance newFamInst = doc.Create.NewFamilyInstance(insPoint, fd.familySymbol, Autodesk.Revit.DB.Structure.StructuralType.NonStructural);
+                                    //FamilyInstance newFamInst = doc.Create.NewFamilyInstance(newPt, fd.familySymbol, StructuralType.NonStructural);
                                     counter++;
+                                    Debug.Print("insPoint.X; " + insPoint.X + insPoint.Y + " xSet: " + xSet + " FamilySymbol: " + fd.familyName);
+
 
                                 }
+                                //Debug.Print("X: " + insPoint.X + " Y: " + insPoint.Y + " Z: " + insPoint.Z);
+                                xSet = insPoint.X;
                             }
                         }
                         SetParamValueAsInt(room, "Furniture Count", tmpFurnSet.FurnitureCount());

@@ -22,7 +22,7 @@ namespace RevitAddinAcademy
 
         private List<string> GetFurnListFromString(string list)
         {
-            List<string> returnList = list.Split(',').ToList();
+            List<string> returnList = list.Split(',').Select(p => p.Trim()).ToList();
             List<string> returnList2 = new List<string>();
 
             foreach (string str in returnList)
@@ -68,7 +68,6 @@ namespace RevitAddinAcademy
                     foreach (ElementId curID in famSymbolList)
                     {
                         FamilySymbol curFS = doc.GetElement(curID) as FamilySymbol;
-
                         if (curFS.Name == typeName)
                             return curFS;
                     }
