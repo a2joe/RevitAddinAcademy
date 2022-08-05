@@ -63,6 +63,26 @@ namespace RevitAddinAcademy.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Blue_1_16 {
+            get {
+                object obj = ResourceManager.GetObject("Blue_1_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Blue_1_32 {
+            get {
+                object obj = ResourceManager.GetObject("Blue_1_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Blue_16 {
             get {
                 object obj = ResourceManager.GetObject("Blue_16", resourceCulture);
