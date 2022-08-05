@@ -108,7 +108,7 @@ namespace RevitAddinAcademy
 
                                     fd.familySymbol.Activate();
 
-                                    //FamilyInstance newFamInst = doc.Create.NewFamilyInstance(newPt, fd.familySymbol, StructuralType.NonStructural);
+                                    FamilyInstance newFamInst = doc.Create.NewFamilyInstance(newPt, fd.familySymbol, StructuralType.NonStructural);
                                     counter++;
                                     Debug.Print("insPoint.X; " + insPoint.X + insPoint.Y + " xSet: " + xSet + " FamilySymbol: " + fd.familyName);
 

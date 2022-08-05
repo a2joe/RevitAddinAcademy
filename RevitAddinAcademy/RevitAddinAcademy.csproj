@@ -83,6 +83,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\QuinnEvans_Gradient500.jpg" />
+    <None Include="Resources\Blue_16.png" />
+    <None Include="Resources\Blue_32.png" />
+    <None Include="Resources\Green_16.png" />
+    <None Include="Resources\Green_32.png" />
+    <None Include="Resources\Red_16.png" />
+    <None Include="Resources\Red_32.png" />
+    <None Include="Resources\Yellow_16.png" />
+    <None Include="Resources\Yellow_32.png" />
+    <None Include="Resources\Michael_16.png" />
+    <None Include="Resources\Michael_32.png" />
+    <None Include="Resources\QuinnEvans_Gradient_16.jpg" />
+    <None Include="Resources\QuinnEvans_Gradient_32.jpg" />
     <Content Include="RevitAddinAcademy.addin" />
   </ItemGroup>
   <ItemGroup>
