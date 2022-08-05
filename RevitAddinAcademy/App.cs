@@ -50,8 +50,8 @@ namespace RevitAddinAcademy
             PulldownButtonData pbData1 = new PulldownButtonData("pulldownButton1", "More Tools");
 
             // step 4: add images
-            pData1.Image = BitmapToImageSource(RevitAddinAcademy.Properties.Resources.Blue_16);
-            pData1.LargeImage = BitmapToImageSource(RevitAddinAcademy.Properties.Resources.Blue_32);
+            pData1.Image = BitmapToImageSource(RevitAddinAcademy.Properties.Resources.Blue_1_16);
+            pData1.LargeImage = BitmapToImageSource(RevitAddinAcademy.Properties.Resources.Blue_1_32);
 
             pData2.Image = BitmapToImageSource(RevitAddinAcademy.Properties.Resources.Green_16);
             pData2.LargeImage = BitmapToImageSource(RevitAddinAcademy.Properties.Resources.Green_32);

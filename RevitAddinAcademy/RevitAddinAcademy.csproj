@@ -95,6 +95,8 @@
     <None Include="Resources\Michael_32.png" />
     <None Include="Resources\QuinnEvans_Gradient_16.jpg" />
     <None Include="Resources\QuinnEvans_Gradient_32.jpg" />
+    <None Include="Resources\Blue_1_16.png" />
+    <None Include="Resources\Blue_1_32.png" />
     <Content Include="RevitAddinAcademy.addin" />
   </ItemGroup>
   <ItemGroup>
