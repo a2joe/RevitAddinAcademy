@@ -1,5 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RevitAddIns>
+  <AddIn Type="Command">
+    <Name>Command RevitAddinAcademy</Name>
+    <Assembly>RevitAddinAcademy.dll</Assembly>
+    <FullClassName></FullClassName>
+    <ClientId>DFB3DB81-9EFB-4C7D-A629-1951FFA14C55</ClientId>
+    <VendorId>com.quinnevans</VendorId>
+    <VendorDescription>Quinn Evans http://quinnevans.com</VendorDescription>
   <AddIn Type="Application">
     <Name>Application RevitAddinAcademy</Name>
     <Assembly>RevitAddinAcademy.dll</Assembly>
