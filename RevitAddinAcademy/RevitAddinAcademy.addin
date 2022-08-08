@@ -3,10 +3,11 @@
   <AddIn Type="Command">
     <Name>Command RevitAddinAcademy</Name>
     <Assembly>RevitAddinAcademy.dll</Assembly>
-    <FullClassName></FullClassName>
+    <FullClassName>RevitAddinAcademy.CmdLoadGroups</FullClassName>
     <ClientId>DFB3DB81-9EFB-4C7D-A629-1951FFA14C55</ClientId>
     <VendorId>com.quinnevans</VendorId>
-    <VendorDescription>Quinn Evans http://quinnevans.com</VendorDescription>
+    <VendorDescription>Quinn Evans, http://quinnevans.com</VendorDescription>
+  </AddIn>
   <AddIn Type="Application">
     <Name>Application RevitAddinAcademy</Name>
     <Assembly>RevitAddinAcademy.dll</Assembly>
