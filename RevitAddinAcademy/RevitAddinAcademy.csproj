@@ -62,6 +62,7 @@
     <Compile Include="App.cs" />
     <Compile Include="cmdDeleteBackup.cs" />
     <Compile Include="cmdElementsFromLines.cs" />
+    <Compile Include="CmdLoadGroups.cs" />
     <Compile Include="CmdInsertFurniture.cs" />
     <Compile Include="FurnSet.cs" />
     <Compile Include="cmdWallsFromLines.cs" />

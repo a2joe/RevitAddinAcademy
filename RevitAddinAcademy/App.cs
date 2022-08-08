@@ -37,8 +37,8 @@ namespace RevitAddinAcademy
             PushButtonData pData3 = new PushButtonData("button3", "Insert Furniture", GetAssemblyName(), "RevitAddinAcademy.CmdInsertFurniture");
             PushButtonData pData4 = new PushButtonData("button4", "Project Setup", GetAssemblyName(), "RevitAddinAcademy.cmdProjectSetup");
             PushButtonData pData5 = new PushButtonData("button5", "Walls from Lines", GetAssemblyName(), "RevitAddinAcademy.cmdWallsFromLines");
-            PushButtonData pData6 = new PushButtonData("button6", "Button 6", GetAssemblyName(), "https://google.com");
-            PushButtonData pData7 = new PushButtonData("button7", "Button 7", GetAssemblyName(), "RevitAddinAcademy.Command");
+            PushButtonData pData6 = new PushButtonData("button6", "Google", GetAssemblyName(), "https://google.com");
+            PushButtonData pData7 = new PushButtonData("button7", "Load Groups from one file to another", GetAssemblyName(), "RevitAddinAcademy.CmdLoadGroups");
             PushButtonData pData8 = new PushButtonData("button8", "Button 8", GetAssemblyName(), "RevitAddinAcademy.Command");
             PushButtonData pData9 = new PushButtonData("button9", "Button 9", GetAssemblyName(), "RevitAddinAcademy.Command");
             PushButtonData pData10 = new PushButtonData("button10", "Button 10", GetAssemblyName(), "RevitAddinAcademy.Command");
