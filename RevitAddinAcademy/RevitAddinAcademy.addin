@@ -8,6 +8,14 @@
     <VendorId>com.quinnevans</VendorId>
     <VendorDescription>Quinn Evans, http://quinnevans.com</VendorDescription>
   </AddIn>
+  <AddIn Type="Command">
+    <Name>Command RevitAddinAcademy</Name>
+    <Assembly>RevitAddinAcademy.dll</Assembly>
+    <FullClassName>RevitAddinAcademy.cmdWriteFile</FullClassName>
+    <ClientId>447BE8B3-C7C5-4016-825A-E45DA770F821</ClientId>
+    <VendorId>com.quinnevans</VendorId>
+    <VendorDescription>Quinn Evans, http://quinnevans.com</VendorDescription>
+  </AddIn>
   <AddIn Type="Application">
     <Name>Application RevitAddinAcademy</Name>
     <Assembly>RevitAddinAcademy.dll</Assembly>
@@ -16,4 +24,5 @@
     <VendorId>com.typepad.thebuildingcoder</VendorId>
     <VendorDescription>The Building Coder, http://thebuildingcoder.typepad.com</VendorDescription>
   </AddIn>
+  
 </RevitAddIns>

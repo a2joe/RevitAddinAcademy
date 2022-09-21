@@ -62,8 +62,15 @@
     <Compile Include="App.cs" />
     <Compile Include="cmdDeleteBackup.cs" />
     <Compile Include="cmdElementsFromLines.cs" />
+    <Compile Include="cmdWriteFile.cs" />
     <Compile Include="CmdLoadGroups.cs" />
     <Compile Include="CmdInsertFurniture.cs" />
+    <Compile Include="FrmTestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmTestForm.Designer.cs">
+      <DependentUpon>FrmTestForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FurnSet.cs" />
     <Compile Include="cmdWallsFromLines.cs" />
     <Compile Include="cmdLesson03.cs" />
@@ -81,6 +88,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="TestData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\QuinnEvans_Gradient500.jpg" />
@@ -130,6 +138,9 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FrmTestForm.resx">
+      <DependentUpon>FrmTestForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmWallsFromLines.resx">
       <DependentUpon>FrmWallsFromLines.cs</DependentUpon>
     </EmbeddedResource>
