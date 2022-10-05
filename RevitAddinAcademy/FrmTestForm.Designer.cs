@@ -34,6 +34,7 @@
             this.btnButton2 = new System.Windows.Forms.Button();
             this.btnButton3 = new System.Windows.Forms.Button();
             this.tbxTextBox = new System.Windows.Forms.TextBox();
+            this.lbxText2 = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // label1
@@ -92,11 +93,21 @@
             this.tbxTextBox.TabIndex = 5;
             this.tbxTextBox.Text = "This is default text";
             // 
+            // lbxText2
+            // 
+            this.lbxText2.FormattingEnabled = true;
+            this.lbxText2.Location = new System.Drawing.Point(651, 34);
+            this.lbxText2.Name = "lbxText2";
+            this.lbxText2.Size = new System.Drawing.Size(137, 225);
+            this.lbxText2.TabIndex = 6;
+            this.lbxText2.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            // 
             // FrmTestForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lbxText2);
             this.Controls.Add(this.tbxTextBox);
             this.Controls.Add(this.btnButton3);
             this.Controls.Add(this.btnButton2);
@@ -118,5 +129,6 @@
         private System.Windows.Forms.Button btnButton2;
         private System.Windows.Forms.Button btnButton3;
         private System.Windows.Forms.TextBox tbxTextBox;
+        private System.Windows.Forms.ListBox lbxText2;
     }
 }

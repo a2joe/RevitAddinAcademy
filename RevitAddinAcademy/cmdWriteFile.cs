@@ -52,7 +52,7 @@ namespace RevitAddinAcademy
 
 
             FrmTestForm form1 = new FrmTestForm(txtFile2);
-            form1.ShowDialog();
+            form1.Show(); //form1.ShowDiaglog() for a fixed box
 
             TestData test1 = new TestData("test is a string", "this is another string", 10);
 

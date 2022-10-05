@@ -42,12 +42,19 @@ namespace RevitAddinAcademy
 
         private void btnButton3_Click(object sender, EventArgs e)
         {
-            lbxText.Items.Add("this is button 3 text");
+
+
+            lbxText2.Items.Add("this is button 3 text");
         }
 
         private void lbxText_DoubleClick(object sender, EventArgs e)
         {
             tbxTextBox.Text = "I double clicked an item";
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
